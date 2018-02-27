@@ -1,0 +1,4 @@
+qemu_test.exe
+qemu_test_w64.exe
+qemu_test_w32.exe
+files/qtest.exe
