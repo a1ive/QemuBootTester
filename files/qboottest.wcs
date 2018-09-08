@@ -666,7 +666,7 @@ _SUB starting
 		FIND $%setcdromfix.Check%=1,TEAM MSTR vcdvolume=3,1,%cdrom%|ENVI options=%options% -cdrom \\.\%vcdvolume%:
 		FIND $%setiso.Check%=1,ENVI options=%options% -cdrom "%cdrom%"
 	}
-	ENVI @qemu="%temp%\QemuBootTester\myqemu.exe" %options%
+	ENVI @qemu="%temp%\QemuBootTester\qemu-system-x86_64w.exe" %options%
 	ENVI @Timer1=1000
 	EXEC =%qemu%
 	FILE --force "%temp%\QemuBootTester"
