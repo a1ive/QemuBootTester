@@ -1,16 +1,9 @@
 ﻿#!pecmd
 
 ENVI^ EnviMode=1
-REGI HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Nls\Language\Default,Lang
-FIND $[ %Lang%<>0804 & %Lang%<>0404 ],
-{
-	TEAM ENVI Lang1=QemuBootTester|ENVI @WINmain=%Lang1%|ENVI Lang2=Hard Disk|ENVI Lang3=CD-ROM|ENVI Lang4=PXE|ENVI Lang5=Kernel|ENVI Lang6=Disk Image|ENVI Lang7=ISO|ENVI Lang8=FloppyImage|ENVI Lang9=FBA(1.6)|ENVI Lang10=Open|ENVI Lang11=server|ENVI Lang12=Boot file|ENVI Lang13=Select a Linux kernel|ENVI Lang14=Select a Linux kernel|ENVI Lang15=Select a Linux initial ram disk|ENVI Lang16=Select a Linux initial ram disk|ENVI Lang17=Cmdline|ENVI Lang18=Boot Mode|ENVI Lang19=Memory|ENVI Lang20=Std VGA
-	TEAM ENVI Lang21=Run Qemu|ENVI Lang22=Free Memory|ENVI Lang23=CPU usage|ENVI Lang24=Select tftp server Folder|ENVI Lang25=Select a bootFILE from tftp server|ENVI Lang26=Select a|ENVI Lang27=Empty|ENVI Lang28=Select a FILE|ENVI Lang29=all|ENVI Lang30=Text file|ENVI Lang31=Enter cmdline|ENVI Lang32=or select a Textfile|ENVI Lang33=ReadOnly|ENVI Lang34=Command line text FILE|ENVI Lang35=Virtual Disk|ENVI Lang36=Set the path for the Imagefile|ENVI Lang37=Preparing ... Please Wait ... |ENVI Lang38=Boot Device|ENVI Lang39=Virtual CDR|ENVI Lang40=ADD Reg
-}!   
-{
-	TEAM ENVI Lang1=Qemu启动测试器|ENVI @WINmain=%Lang1%|ENVI Lang2=磁盘测试|ENVI Lang3=光驱测试|ENVI Lang4=PXE 网启|ENVI Lang5=Linux内核|ENVI Lang6=磁盘镜像|ENVI Lang7=光盘镜像|ENVI Lang8=软盘镜像|ENVI Lang9=FBA(1.6)|ENVI Lang10=打 开|ENVI Lang11=服务器|ENVI Lang12=启动文件|ENVI Lang13=选择内核|ENVI Lang14=选择内核文件|ENVI Lang15=选择初始内存盘文件|ENVI Lang16=选择初始内存盘文件|ENVI Lang17=命令行|ENVI Lang18=启动模式|ENVI Lang19=内存|ENVI Lang20=标准VGA
-	TEAM ENVI Lang21=开始测试|ENVI Lang22=可用内存|ENVI Lang23=CPU使用率|ENVI Lang24=请选择tftp目录|ENVI Lang25=从tftp服务器选择启动文件|ENVI Lang26=请选择一个|ENVI Lang27=无盘片|ENVI Lang28=浏览并选定一个文件|ENVI Lang29=全部格式|ENVI Lang30=文本文档|ENVI Lang31=输入命令行|ENVI Lang32=或选择一个命令行文本|ENVI Lang33=只读模式|ENVI Lang34=包含命令行的文本文件|ENVI Lang35=附加磁盘|ENVI Lang36=设置虚拟镜像路径|ENVI Lang37=正在准备文件...请稍候...|ENVI Lang38=启动设备|ENVI Lang39=附加光驱|ENVI Lang40=注册右键
-}
+
+ENVI @WINmain=Qemu启动测试器
+
 FDIR --long --fullfile temp=%temp%
 FDIR --long --fullfile desktop=%desktop%
 ENVI AllFiles= .ISO  .DMG  .CDR  .IMG  .IMA  .GZ  .FBA  .PXE  .BIN  .0  .VHD  .VMDK  .MOS  .VDI  Drive
@@ -39,7 +32,7 @@ _SUB CHECK2 *
 		CALC #WID = %WID%/1
 		IFEX $%WID%>0,!
 		{
-			FIND --wid* WID,%Lang1%
+			FIND --wid* WID,Qemu启动测试器
 			ENVI $QemuBootTester_527104427=%WID%
 		}
 		ENVI @@Visable=%WID%:2   //显示并激活窗口, 数值2则恢复窗口
@@ -51,7 +44,7 @@ _SUB CHECK2 *
 	ENVI $QemuBootTester_527104427
 _END
 
-_SUB WINmain,W365H450,%Lang1%
+_SUB WINmain,W365H450,Qemu启动测试器
 	FIND $%DBG527104427_Test%=Test,!
 	{
 		ENVI $QemuBootTester_527104427=%&__WINID%
@@ -64,11 +57,11 @@ _SUB WINmain,W365H450,%Lang1%
 	SET$ &NL=0d 0a
 
 	//开始、注册
-	ITEM -font:18 -def go,L125T345W105H32,%Lang21%,CALL starting,
-	CHEK regqtest,L20T340W65H15,%Lang40%,,0
+	ITEM -font:18 -def go,L125T345W105H32,开始测试,CALL starting,
+	CHEK regqtest,L20T340W65H15,注册右键,,0
 	CHEK accel,L20T360W65H15,HAXM,,0
-	CHEK stdvga,L265T340W70H15,%Lang20%,,1
-	CHEK readonly,L265T360W80H15,%Lang33%,,1
+	CHEK stdvga,L265T340W70H15,标准VGA,,1
+	CHEK readonly,L265T360W80H15,只读模式,,1
 	EDIT qemu,L0T380W359H20,,,0x8
 
 	//隐藏，用于磁盘变化时，刷新磁盘
@@ -77,43 +70,43 @@ _SUB WINmain,W365H450,%Lang1%
 
 	//测试项目
 	//GROU -center ,L10T5W340H55,
-	RADI hdtest,L20T15W80H19,%Lang2%,CALL SetInit,1,1
-	RADI cdtest,L100T15W80H19,%Lang3%,CALL SetInit,0,1
-	RADI pxetest,L180T15W80H19,%Lang4%,CALL SetInit,0,1
-	RADI linux,L260T15W80H19,%Lang5%,CALL SetInit,0,1
-	RADI vhdtest,L20T35W80H19,%Lang6%,CALL SetInit,0,1
-	RADI isotest,L100T35W80H19,%Lang7%,CALL SetInit,0,1
-	RADI imgtest,L180T35W80H19,%Lang8%,CALL SetInit,0,1
-	RADI fbatest,L260T35W80H19,%Lang9%,CALL SetInit,0,1
+	RADI hdtest,L20T15W80H19,磁盘测试,CALL SetInit,1,1
+	RADI cdtest,L100T15W80H19,光驱测试,CALL SetInit,0,1
+	RADI pxetest,L180T15W80H19,PXE网启,CALL SetInit,0,1
+	RADI linux,L260T15W80H19,Linux内核,CALL SetInit,0,1
+	RADI vhdtest,L20T35W80H19,磁盘镜像,CALL SetInit,0,1
+	RADI isotest,L100T35W80H19,光盘镜像,CALL SetInit,0,1
+	RADI imgtest,L180T35W80H19,软盘镜像,CALL SetInit,0,1
+	RADI memdisk,L260T35W80H19,memdisk,CALL SetInit,0,1
 	RADI wimtest,L20T55W80H19,WIM,CALL SetInit,0,1
-	RADI memdisk,L100T55W80H19,memdisk,CALL SetInit,0,1
+    RADI fbatest,L100T55W80H19,FBA(1.6),CALL SetInit,0,1
 	RADI fba7test,L180T55W80H19,FBA(1.7),CALL SetInit,0,1
 
 	//启动设备
-	LABE tmplabe,L20T82W80H19,%Lang38% : ,
+	LABE tmplabe,L20T82W80H19,启动设备 : ,
 	EDIT bootdevice,L100T79W235H20,,,0x8
-	ITEM itembrow,L20T105W45H23,%Lang10%,CALL browtestfile,,16
+	ITEM itembrow,L20T105W45H23,打 开,CALL browtestfile,,16
 	EDIT testfile,L70T107W270H20,,,0x110
 	LIST phylist,L20T107W320H20
 	//GROU -center tmpgrou,L10T60W340H75,
 
 	//PXE网启
-	ITEM browtftp,L20T75W70H23,tftp %Lang11%,CALL settftp,,16
+	ITEM browtftp,L20T75W70H23,tftp 服务器,CALL settftp,,16
 	EDIT tftp,L95T77W245H20,,,0x10
-	ITEM browbootfile,L20T102W70H23,%Lang12%,CALL selbootfile,,-16
+	ITEM browbootfile,L20T102W70H23,启动文件,CALL selbootfile,,-16
 	EDIT bootfile,L95T104W245H20,,,0x10
 
 	//Linux内核
 	ITEM browkernel,L20T75W50H23,Kernel,CALL browlinuxkernel,,16
-	EDIT kernel,L75T77W265H20,%Lang14%,,0x110
+	EDIT kernel,L75T77W265H20,选择内核文件,,0x110
 	ITEM browinitrd,L20T105W50H23,initrd,CALL browlinuxinitrd,,16
-	EDIT initrd,L75T107W265H20,%Lang16%,,0x110
-	ITEM append,L20T135W50H23,%Lang17%,CALL browtext,,16
+	EDIT initrd,L75T107W265H20,选择初始内存盘文件,,0x110
+	ITEM append,L20T135W50H23,命令行,CALL browtext,,16
 	LIST -h cmdline,L75T137W265H160,,,,0x114
 
 	//附加磁盘
 	//GROU -center ,L10T135W340H70,
-	LABE ,L20T163W74H19,%Lang35% : ,
+	LABE ,L20T163W74H19,附加磁盘 : ,
 	EDIT vdisk,L105T165W235H20,,,0x8
 	CHEK setvdiskfix,L20T189W14H20,,CALL creatdisk vdiskfix,0
 	LIST vdiskfix,L34T189W147H20,,CALL creatdisk vdiskfix,
@@ -124,7 +117,7 @@ _SUB WINmain,W365H450,%Lang1%
 
 	//附加光驱
 	//GROU -center ,L10T205W340H70,
-	LABE ,L20T223W76H19,%Lang39% : ,
+	LABE ,L20T223W76H19,附加光驱 : ,
 	EDIT cdrom,L105T220W235H20,,,0x8
 	CHEK setcdromfix,L20T246W14H20,,CALL creatdisk cdromfix,0
 	LIST cdromfix,L34T246W235H20,,CALL creatdisk cdromfix,
@@ -133,14 +126,14 @@ _SUB WINmain,W365H450,%Lang1%
 
 	//启动模式
 	//GROU -center ,L10T275W340H33,
-	LABE ,L20T287W80H19,%Lang18% : ,
+	LABE ,L20T287W80H19,启动模式 : ,
 	RADI efi64test,L105T284W75H19,EFI-x64,ENVI @stdvga.Enable=0,0,2
 	RADI efi32test,L185T284W75H19,EFI-IA32,ENVI @stdvga.Enable=0,0,2
 	RADI biostest,L265T284W80H19,Legacy BIOS,ENVI @stdvga.Enable=1,1,2
 
 	//内存、CPU
 	//GROU -center ,L10T308W160H33,
-	LABE setmem,L20T318W40H15,%Lang19% :,
+	LABE setmem,L20T318W40H15,内存 :,
 	LIST memory,L65T314W55H20,128|256|512|768|1024|2048|3072|4096|5120|6144|7168|8192,%memory%,1024,0x4
 	LABE mem,L122T318W40H15,MB,
 	LABE setcpu,L180T318W40H15,CPU :,
@@ -174,7 +167,7 @@ _SUB WINmain,W365H450,%Lang1%
 	TIME Timer3,1,CALL RunOnce %*
 
 	//Linux内核命令行界面鼠标靠近提示
-	ENVI @append.MSG=0x02A1: TEAM ENVI @@Cur=?heng;zong|TIPS* %Lang31%,%Lang32%,,,@aL%heng%T%zong%
+	ENVI @append.MSG=0x02A1: TEAM ENVI @@Cur=?heng;zong|TIPS* 输入命令行,或选择一个命令行文本,,,@aL%heng%T%zong%
 	ENVI @append.MSG=0x02A3: TIPS *
 _END
 
@@ -201,23 +194,23 @@ _SUB OnTimer1
 	ENVI I1=%I2%
 	ENVI T1=%T2%
 	IFEX MEM=?,Available_memory
-	ENVI @label1=%Lang22%: %Available_memory% MB
-	ENVI @label2=%Lang23%: %P%%%
+	ENVI @label1=可用内存: %Available_memory% MB
+	ENVI @label2=CPU使用率: %P%%%
 _END
 
 _SUB browtestfile
-	FIND $%fbatest.Check%=1,BROW -fix imagefile,,%Lang26% %Lang9%,%Lang9% (*.fba)|*.FBA|%Lang29% ( * )|*.*|,0x1000!FIND $%fba7test.Check%=1,BROW -fix imagefile,,%Lang26% %Lang9%,%Lang9% (*.fba)|*.FBA,0x1000!FIND $%memdisk.Check%=1,BROW -fix imagefile,,%Lang26% %Lang8%,%Lang29% ( * )|*.*|,0x1000!FIND $%wimtest.Check%=1,BROW -fix imagefile,,%Lang26% WIM,WIM (*.wim)|*.wim|,0x1000!FIND $%isotest.Check%=1,BROW -fix imagefile,,%Lang26% %Lang7%,%Lang7% (*.iso;*.cdr;*.dmg)|*.iso;*.cdr;*.dmg|%Lang29% ( * )|*.*|,0x1000!FIND $%vhdtest.Check%=1,BROW -fix imagefile,,%Lang26% %Lang6%,%Lang6% (*.vhd;*.mos;*.vmdk;*.vdi;*.img;*.ima;*.raw)|*.ima;*.img;*.vhd;*.vmdk;*.vdi;*.mos;*.raw|%Lang29% ( * )|*.*|,0x1000!BROW -fix imagefile,,%Lang26% %Lang8%,%Lang8% (*.ima;*.img)|*.ima;*.img|%Lang29% ( * )|*.*|,0x1000
+	FIND $%fbatest.Check%=1,BROW -fix imagefile,,请选择一个 FBA,FBA (*.fba)|*.FBA|全部格式 ( * )|*.*|,0x1000!FIND $%fba7test.Check%=1,BROW -fix imagefile,,请选择一个 FBA,FBA (*.fba)|*.FBA,0x1000!FIND $%memdisk.Check%=1,BROW -fix imagefile,,请选择一个 软盘镜像,全部格式 ( * )|*.*|,0x1000!FIND $%wimtest.Check%=1,BROW -fix imagefile,,请选择一个 WIM,WIM (*.wim)|*.wim|,0x1000!FIND $%isotest.Check%=1,BROW -fix imagefile,,请选择一个 光盘镜像,光盘镜像 (*.iso;*.cdr;*.dmg)|*.iso;*.cdr;*.dmg|全部格式 ( * )|*.*|,0x1000!FIND $%vhdtest.Check%=1,BROW -fix imagefile,,请选择一个 磁盘镜像,磁盘镜像 (*.vhd;*.mos;*.vmdk;*.vdi;*.img;*.ima;*.raw)|*.ima;*.img;*.vhd;*.vmdk;*.vdi;*.mos;*.raw|全部格式 ( * )|*.*|,0x1000!BROW -fix imagefile,,请选择一个 软盘镜像,软盘镜像 (*.ima;*.img)|*.ima;*.img|全部格式 ( * )|*.*|,0x1000
 	FIND $%imagefile%=,!TEAM ENVI @testfile=%imagefile%|ENVI @bootdevice=%imagefile%
 _END
 
 _SUB settftp
-	BROW -fix dir,*%desktop%,%Lang24%
+	BROW -fix dir,*%desktop%,请选择tftp目录
 	FIND $%dir%=,!ENVI @tftp=%dir%
 _END
 
 _SUB selbootfile
 	CALL MakeLogic %tftp%
-	BROW -fix tftpfile,%dir%\*,%Lang25%,all|*|,0x1000
+	BROW -fix tftpfile,%dir%\*,从tftp服务器选择启动文件,all|*|,0x1000
 	FIND $%tftpfile%=,EXIT _SUB
 	FNAM -ext file_ext=%tftpfile%
 	FDIR --full file_dir=%tftpfile%
@@ -233,17 +226,17 @@ _SUB MakeLogic
 _END
 
 _SUB browlinuxkernel
-	BROW -fix linuxfile,,%Lang13%,%Lang29% ( * )|*.*|,0x1000
+	BROW -fix linuxfile,,选择内核,全部格式 ( * )|*.*|,0x1000
 	FIND $%linuxfile%=,!ENVI @kernel=%linuxfile%
 _END
 
 _SUB browlinuxinitrd
-	BROW -fix linuxfile,,%Lang15%,%Lang29% ( * )|*.*|,0x1000
+	BROW -fix linuxfile,,选择初始内存盘文件,全部格式 ( * )|*.*|,0x1000
 	FIND $%linuxfile%=,!ENVI @initrd=%linuxfile%
 _END
 
 _SUB browtext
-	BROW -fix textfile,,%Lang26% %Lang34%,%Lang30% (*.txt;*.ini)|*.txt;*.ini|,0x1000
+	BROW -fix textfile,,请选择一个包含命令行的文本文件,文本文档 (*.txt;*.ini)|*.txt;*.ini|,0x1000
 	FIND $%textfile%=,!
 	{
 		READ "%textfile%",**,&Str
@@ -296,7 +289,7 @@ _SUB creatdisk
 		ENVI @vdisksize.Enable=0
 		ENVI @vmdk.Enable=1
 		ENVI @readonly.Enable=1
-		BROW -fix vd,,%Lang36%,(*.vhd;*.mos;*.vmdk;*.vdi;*.img;*.ima)|*.ima;*.img;*.vhd;*.vmdk;*.vdi;*.mos|%Lang29% ( * )|*.*|,0x1000
+		BROW -fix vd,,设置虚拟镜像路径,(*.vhd;*.mos;*.vmdk;*.vdi;*.img;*.ima)|*.ima;*.img;*.vhd;*.vmdk;*.vdi;*.mos|全部格式 ( * )|*.*|,0x1000
 		ENVI @vdisk=%vd%
 	}
 	FIND $%setcdromfix.Check%=1,
@@ -317,7 +310,7 @@ _SUB creatdisk
 		ENVI @setcdromfix.Check=0
 		ENVI @cdromfix.Enable=0
 		ENVI @iso.Enable=1
-		BROW -fix cdh,,%Lang36%,(*.iso;*.cdr;*.dmg)|*.iso;*.cdr;*.dmg|%Lang29% ( * )|*.*|,0x1000
+		BROW -fix cdh,,设置虚拟镜像路径,(*.iso;*.cdr;*.dmg)|*.iso;*.cdr;*.dmg|全部格式 ( * )|*.*|,0x1000
 		ENVI @cdrom=%cdh%
 	}
 _END
@@ -532,8 +525,8 @@ _SUB Linuxtest
 	ENVI @initrd.visable=1
 	ENVI @append.visable=1
 	ENVI @cmdline.visable=1
-	ENVI @kernel=%Lang14%
-	ENVI @initrd=%Lang16%
+	ENVI @kernel=选择内核文件
+	ENVI @initrd=选择初始内存盘文件
 	ENVI @cmdline.VAL=A|B|C|D
 	ENVI @cmdline=
 _END
@@ -557,7 +550,7 @@ _SUB filetest
 	ENVI @bootdevice.visable=1
 	ENVI @itembrow.visable=1
 	ENVI @testfile.visable=1
-	ENVI @testfile=%Lang28%
+	ENVI @testfile=浏览并选定一个文件
 _END
 
 _SUB listalldisk
@@ -590,7 +583,7 @@ _SUB listalldisk
 		}
 		FORM DriveType,Bustype=\\.\PhysicalDrive%disknum%
 		ENVI dtype=%DriveType%%Bustype%
-		FIND $%dtype%=117,ENVI diskinfo=%diskinfo%|RM%disknum%: %V12% ( %disksize%, %drives% )!%listall%ENVI diskinfo=%diskinfo%|HD%disknum%: %V12% ( %disksize%, %drives% )
+		FIND $%dtype%=117,ENVI diskinfo=%diskinfo%|※ RM%disknum%: %V12% ( %disksize%, %drives% )!%listall%ENVI diskinfo=%diskinfo%|※ HD%disknum%: %V12% ( %disksize%, %drives% )
 	}
 	SED &TmpDiskInfo=0,|,%&NL%,%diskinfo%
 	FORX *NL &TmpDiskInfo,FirstHDInfo,FIND $%FirstHDInfo%=,!EXIT FORX
@@ -603,7 +596,7 @@ _SUB listcdrom
 	{
 		FORM DriveType=%volume%
 		IFEX %volume%,TEAM FDRV *vol V=%volume%|ENVI drvsta=%V%!ENVI drvsta=%Lang27%
-		FIND $%DriveType%=DRIVE_CDROM,ENVI cdroms=%cdroms%|DVD/CD-ROM %volume% (  %drvsta%  ) !FIND $%DriveType%=DRIVE_CDROMUSB,ENVI cdroms=%cdroms%|USB CD-ROM %volume% (  %drvsta%  ) 
+		FIND $%DriveType%=DRIVE_CDROM,ENVI cdroms=%cdroms%|※ %volume% DVD/CD-ROM  (  %drvsta%  ) !FIND $%DriveType%=DRIVE_CDROMUSB,ENVI cdroms=%cdroms%|※ %volume% USB CD-ROM  (  %drvsta%  ) 
 	}
 	MSTR cdroms=2,0,%cdroms%
 	SED &TmpCDInfo=0,|,%&NL%,%cdroms%
@@ -614,17 +607,17 @@ _SUB starting
 	ENVI @Timer1=0
 	ENVI @go.Enable=0
 	CALL Display 0
-	ENVI @label1=%Lang37%
+	ENVI @label1=正在准备文件...请稍候...
 	ENVI @label2=
 	FILE --force "%temp%\QemuBootTester"
 	MDIR %temp%\QemuBootTester
 	EXEC --hide --wait --m --exe:#5
-	ENVI options=-L "%temp%\QemuBootTester" -m %memory% -smp %cpu% -localtime
+	ENVI options=-m %memory% -smp %cpu%
 	FIND $%biostest.Check%=1,
 	{
 		FIND $%stdvga.Check%=1,ENVI options=%options% -vga std
 	}
-	FIND $%efi64test.Check%=1,ENVI options=%options% -bios efi64.bin!FIND $%efi32test.Check%=1,ENVI options=%options% -bios efi32.bin
+	FIND $%efi64test.Check%=1,ENVI options=%options% -bios efi64.fd!FIND $%efi32test.Check%=1,ENVI options=%options% -bios efi32.fd
 	FIND $%readonly.Check%=1,ENVI options=%options% -snapshot
 	FIND $%accel.Check%=1,ENVI options=%options% -accel hax
 	FIND $%hdtest.Check%=1,TEAM MSTR disknum=5,1,%phylist%|ENVI options=%options% -hda \\.\PhysicalDrive%disknum% -boot c
@@ -646,7 +639,7 @@ _SUB starting
 		ENVI options=%options% -kernel "%kernel%"
 		FIND $%initrd%=,!
 		{
-			FIND $%initrd%=%Lang16%,!ENVI options=%options% -initrd "%initrd%"
+			FIND $%initrd%=选择初始内存盘文件,!ENVI options=%options% -initrd "%initrd%"
 		}
 		FIND $%cmdline%=,!ENVI options=%options% -append "%cmdline%"
 		ENVI options=%options% -boot c
@@ -666,7 +659,7 @@ _SUB starting
 		FIND $%setcdromfix.Check%=1,TEAM MSTR vcdvolume=3,1,%cdrom%|ENVI options=%options% -cdrom \\.\%vcdvolume%:
 		FIND $%setiso.Check%=1,ENVI options=%options% -cdrom "%cdrom%"
 	}
-	ENVI @qemu="%temp%\QemuBootTester\qemu-system-x86_64w.exe" %options%
+	ENVI @qemu="%temp%\QemuBootTester\qemu-system-x86_64.exe" %options%
 	ENVI @Timer1=1000
 	EXEC =%qemu%
 	FILE --force "%temp%\QemuBootTester"
@@ -800,7 +793,7 @@ _SUB OnTimer2
 		FIND $%initrd%=,TEAM ENVI @go.Enable=1|EXIT BLOCK
 		CALL MakeLogic %initrd%
 		IFEX %dir%\,TEAM ENVI @go.Enable=0|EXIT BLOCK
-		IFEX %dir%,!FIND $%initrd%=%Lang16%,TEAM ENVI @go.Enable=1|EXIT BLOCK!TEAM ENVI @go.Enable=0|EXIT BLOCK
+		IFEX %dir%,!FIND $%initrd%=选择初始内存盘文件,TEAM ENVI @go.Enable=1|EXIT BLOCK!TEAM ENVI @go.Enable=0|EXIT BLOCK
 		FIND $%initrd%=%dir%,!ENVI @initrd=%dir%
 		ENVI @go.Enable=1
 	}
@@ -906,7 +899,7 @@ _SUB RegAddQTest
 	REGI $HKCR\%tmpQTester%\,QTester
 	FIND $%tmpQTester%=Drive,ENVI QTester=Drive
 	FIND $%QTester%=,ENVI QTester=%tmpQTester%
-	REGI $HKCR\%QTester%\shell\QemuBootTester\=%Lang1%
+	REGI $HKCR\%QTester%\shell\QemuBootTester\=Qemu启动测试器
 	REGI $HKCR\%QTester%\shell\QemuBootTester\command\="%MyName%" "%%1"
 	REGI $HKCR\%QTester%\shell\QemuBootTester\Icon="%MyName%",0
 _END
